@@ -1,0 +1,8 @@
+version: v1beta22
+containers:
+- name: outyet2
+  image: adg1/outyet
+  ports:
+  - name: http
+    hostPort: 5555
+    containerPort: 5555
