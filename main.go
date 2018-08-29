@@ -5,7 +5,12 @@ import (
 	"github.com/gorilla/websocket"
 	"imp"
 	"fmt"
+	"github.com/astaxie/beego"
+	"net"
+	"os"
 )
+
+
 var  Poll []*imp.Wsmsg
 
 func wsHandler(w http.ResponseWriter , r *http.Request){
@@ -33,7 +38,75 @@ func wsHandler(w http.ResponseWriter , r *http.Request){
 	return
 }
 
-func main(){
+func main2(){
+	beego.Run()
 	http.HandleFunc("/ws", wsHandler)
 	http.ListenAndServe(":5555",nil)
+}
+
+
+
+func main(){
+	StartClient1()
+}
+
+func StartClient1() {
+	tcpAddress, err := net.ResolveTCPAddr("tcp4", "192.168.100.145:51680")
+	if err != nil {
+		//errs.Error_exit(err)
+		fmt.Fprintf(os.Stderr,"Fatal errs %s",err.Error())
+	}
+	conn, err := net.DialTCP("tcp", nil, tcpAddress)
+	if err != nil {
+		//errs.Error_exit(err)
+		fmt.Fprintf(os.Stderr,"Fatal errs %s",err.Error())
+
+	}
+
+	writeChan := make(chan []byte, 1024)
+	readChan := make(chan []byte, 1024)
+
+	go writeConnection(conn, writeChan)
+	go readConnection(conn, readChan)
+
+	//go handleReadChannel(readChan)
+
+	for {
+		var s string
+		fmt.Scan(&s)
+		writeChan <- []byte(s)
+	}
+
+}
+
+func readConnection(conn *net.TCPConn, channel chan []byte) {
+	defer conn.Close()
+
+	buffer := make([]byte, 2048)
+	for {
+		n, err := conn.Read(buffer)
+		if err != nil {
+			fmt.Fprintf(os.Stderr,"Fatal errs2 %s",err.Error())
+			//errs.Error_print(err)
+			return
+		}
+		println("Received from:", conn.RemoteAddr().String(), string(buffer[:n]))
+		//channel <- buffer[:n]
+	}
+
+}
+
+func writeConnection(conn *net.TCPConn, channel chan []byte) {
+	defer conn.Close()
+	for {
+		select {
+		case data := <- channel:
+			_, err := conn.Write(data)
+			if err != nil {
+				fmt.Fprintf(os.Stderr,"Fatal errs %s",err.Error())
+				//errs.Error_exit(err)
+			}
+			println("Write to:", conn.RemoteAddr(), string(data))
+		}
+	}
 }
