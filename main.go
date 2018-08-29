@@ -47,7 +47,8 @@ func main2(){
 
 
 func main(){
-	StartClient1()
+	main2()
+	//StartClient1()
 }
 
 func StartClient1() {
