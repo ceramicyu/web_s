@@ -20,9 +20,10 @@ func main(){
 		err := cmd.Run()
 		if err != nil {
 			fmt.Println("git pull err :",err)
-			io.WriteString(writer,"git pull err")
+			io.WriteString(writer,"git pull success"+fmt.Sprintf("%v",err))
+		}else{
+			io.WriteString(writer,"git pull success")
 		}
-		io.WriteString(writer,"git pull success")
 
 	})
 	http.ListenAndServe(":8080",nil)
