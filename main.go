@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"io"
 )
 
 func main(){
@@ -20,6 +21,7 @@ func main(){
 		if err != nil {
 			fmt.Println("git pull err :",err)
 		}
+		io.WriteString(writer,"git pull success")
 
 	})
 	http.ListenAndServe(":8080",nil)
