@@ -8,7 +8,7 @@ import (
 
 func main(){
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		io.WriteString(writer,"Hi,this is a new world! update 2019 asdgajhgdjah")
+		io.WriteString(writer,"<h1>Hi,this is a new world! update 2019 asdgajhgdjah</h1>")
 	})
 	http.HandleFunc("/git", func(writer http.ResponseWriter, request *http.Request) {
 
