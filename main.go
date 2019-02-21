@@ -9,7 +9,7 @@ import (
 
 func main(){
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		io.WriteString(writer,"Hi,this is a new world!")
+		io.WriteString(writer,"Hi,this is a new world! update")
 	})
 	http.HandleFunc("/git", func(writer http.ResponseWriter, request *http.Request) {
 		cmd := exec.Command("/bin/bash", "-c", "")
