@@ -1,13 +1,26 @@
 package main
 
 import (
-	"io"
+	"bytes"
+	"fmt"
 	"net/http"
+	"os/exec"
 )
 
 func main(){
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		io.WriteString(writer,"Hi,this is a new world!")
+	})
+	http.HandleFunc("/git", func(writer http.ResponseWriter, request *http.Request) {
+		cmd := exec.Command("/bin/bash", "-c", "")
+		var out bytes.Buffer
+
+		cmd.Stdout = &out
+		err := cmd.Run()
+		if err != nil {
+			fmt.Println("git pull err :",err)
+		}
+
 	})
 	http.ListenAndServe(":8080",nil)
 }
