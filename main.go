@@ -4,11 +4,15 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 )
 
 func main(){
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		io.WriteString(writer,"<h1>Hi,this is a new world! update 2019 asdgajhgdjah</h1>")
+		f,_:=os.Open("./public/html/index.html")
+		buf:=make([]byte,1024*1024)
+		n,_:=f.Read(buf)
+		io.WriteString(writer,string(buf[:n]))
 	})
 	http.HandleFunc("/git", func(writer http.ResponseWriter, request *http.Request) {
 
