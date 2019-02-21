@@ -13,7 +13,7 @@ func main(){
 		io.WriteString(writer,"Hi,this is a new world! update 2019")
 	})
 	http.HandleFunc("/git", func(writer http.ResponseWriter, request *http.Request) {
-		cmd := exec.Command("/bin/bash", "-c", "./home/www/web/web_s/r.sh")
+		cmd := exec.Command("/bin/bash", "-c", "/home/www/web/web_s/r.sh")
 		var out bytes.Buffer
 
 		cmd.Stdout = &out
